@@ -1,2 +1,4 @@
-package pages;public class OthersPage {
+package pages;
+
+public class OthersPage {
 }
