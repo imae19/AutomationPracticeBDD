@@ -45,4 +45,9 @@ public class HomeSteps {
     public void i_click_a_button_others() {
         System.out.println("Clicked on Others page button");
     }
+
+    @When("I click a button calendar")
+    public void i_click_a_button_calendar() {
+        System.out.println("Clicked a button calendar");
+    }
 }
