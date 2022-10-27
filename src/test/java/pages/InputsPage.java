@@ -5,12 +5,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.BrowserUtils;
 
-public class OthersPage {
-    public OthersPage(){
+public class InputsPage {
+
+    public InputsPage(){
         PageFactory.initElements(BrowserUtils.getDriver(), this);
     }
 
-    @FindBy(id = "btn-status")
-    public WebElement statusBtn;
-
+    @FindBy(name = "state")
+    public WebElement selectState;
 }

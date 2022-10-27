@@ -2,26 +2,71 @@ package step_definitions;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import pages.CalendarPage;
+import pages.CommonPage;
+import utils.BrowserUtils;
 
-public class CalendarSteps {
+public class CalendarSteps implements CommonPage {
+    CalendarPage page;
 
-    @When("I click a button end date Input")
+    public CalendarSteps(){
+        this.page = new CalendarPage();
+    }
+
+    @When("I click a button endDateInput")
     public void i_click_a_button_end_date_input() {
-        System.out.println("Clicked a button end date Input");
+        BrowserUtils.click(page.endDateInput);
     }
 
-    @When("I click a button end date calendar")
+    @When("I click a button endDateCalendar")
     public void i_click_a_button_end_date_calendar() {
-        System.out.println("Clicked a button end date calendar");
+        BrowserUtils.click(page.endDateCalendar);
     }
 
-    @When("I click a button submit")
+    @When("I click a button Submit")
     public void i_click_a_button_submit() {
-        System.out.println("Clicked a button submit");
+        BrowserUtils.click(
+                BrowserUtils.getDriver().findElement(
+                        By.xpath(String.format(XPATH_TEMPLATE_BUTTON, "Submit"))
+                )
+        );
     }
+
+//    @Then("text will display {int} day difference")
+//    public void text_will_display_day_difference(Integer int1) {
+//        String startDate = page.startDateTxt.getAttribute("value");
+//        String endDate = page.endDateTxt.getAttribute("value");
+//
+//        if(startDate.charAt(0) == '0')
+//            startDate = startDate.substring(1);
+//
+//        if(endDate.charAt(0) == '0')
+//            endDate = endDate.substring(1);
+//
+//        String expectedTxt = "There are 1 days between " + startDate + " and " + endDate + "";
+//        String actualTxt = BrowserUtils.getText(page.numberOfDaysTxt);
+//
+//        BrowserUtils.assertEquals(expectedTxt, actualTxt);
+//    }
 
     @Then("Verify there are {int} days between startDate and endDate")
-    public void verify_there_are_days_between_start_date_and_end_date(Integer int1) {
-        System.out.println("Verify there are {int} days between startDate and endDat");
+    public void verifyThereAreDaysBetweenStartDateAndEndDate(int arg0) {
+        String startDate = page.startDateTxt.getAttribute("value");
+        String endDate = page.endDateTxt.getAttribute("value");
+
+        if(startDate.charAt(0) == '0')
+            startDate = startDate.substring(1);
+
+        if(endDate.charAt(0) == '0')
+            endDate = endDate.substring(1);
+
+        String expectedTxt = "There are 1 days between " + startDate + " and " + endDate + "";
+        String actualTxt = BrowserUtils.getText(page.numberOfDaysTxt);
+
+        BrowserUtils.assertEquals(expectedTxt, actualTxt);
+
     }
 }

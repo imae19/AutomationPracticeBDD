@@ -3,51 +3,100 @@ package step_definitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.bouncycastle.jce.provider.BrokenJCEBlockCipher;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import pages.*;
+import utils.BrowserUtils;
 
-public class HomeSteps {
+public class HomeSteps implements CommonPage{
+    HomePage page;
+    CalendarPage calendarPage;
+    PopUpPage popUpPage;
+    MultipleWindowPage multipleWindowPage;
+
+    public HomeSteps() {
+        page = new HomePage();
+        calendarPage = new CalendarPage();
+        popUpPage = new PopUpPage();
+        multipleWindowPage = new MultipleWindowPage();
+    }
 
     @Given("I open url of homepage")
     public void iOpenUrlOfHomepage() {
-        System.out.println("open homepage");
+        BrowserUtils.getDriver();
     }
 
-    @When("I capture text of the header")
-    public void i_capture_text_of_the_header() {
-        System.out.println("capture header on home page");
+    @Then("Verify header text is {string}")
+    public void verifyHeaderTextIs(String headerTxt) {
+        WebElement element = null;
+
+        switch (headerTxt.toLowerCase()) {
+            case "automation with selenium":
+                element = page.headerTitle;
+                break;
+            default:
+                System.out.println("WebElement is not defined");
+        }
+        BrowserUtils.assertEquals(element.getText(), headerTxt);
     }
 
-    @Then("Verify header text is Automation with Selenium")
-    public void verify_header_text_is_automation_with_selenium() {
-        System.out.println("Verified header is Automation with Selenium");
+    @Then("Verify button {string} is displayed")
+    public void verifyButtonIsDisplayed(String button) {
+        BrowserUtils.isDisplayed(
+                BrowserUtils.getDriver().findElement(
+                        By.xpath(String.format(XPATH_TEMPLATE_LINKTEXT, button)))
+        );
     }
 
-    @Then("Verify button Home is displayed")
-    public void verify_button_home_is_displayed() {
-        System.out.println("Tested Home button is displayed");
+
+    //TODO: Update link text related steps with this new step
+    @Then("Verify link text Home is displayed")
+    public void verifyLinkTextHomeIsDisplayed() {
+
     }
 
-    @Then("Verify button Calendar is displayed")
-    public void verify_button_calendar_is_displayed() {
-        System.out.println("Tested Calendar button is displayed");
+    @When("I click a button {string}")
+    public void iClickAButton(String button) {
+        switch (button.toLowerCase()) {
+            case "enddateinput":
+                BrowserUtils.click(calendarPage.endDateInput);
+                break;
+            case "enddatecalendar":
+                BrowserUtils.click(calendarPage.endDateCalendar);
+                break;
+            case "message":
+                BrowserUtils.click(popUpPage.msgBtn);
+                break;
+            case "bmi calculator":
+                BrowserUtils.click(popUpPage.bmiBtn);
+                break;
+            default:
+                BrowserUtils.click(BrowserUtils.getDriver().findElement(
+                        By.xpath(String.format(XPATH_TEMPLATE_BUTTON, button))));
+        }
+    }
+    // this one is clicking User-Mgt button referred to userMgt.feature on Background
+    @When("I click nav button {string}")
+    public void iClickNavButton(String button) {
+        BrowserUtils.click(BrowserUtils.getDriver().findElement(
+                By.xpath(String.format(XPATH_TEMPLATE_LINKTEXT, button))));
     }
 
-    @Then("Verify button UserMgt is displayed")
-    public void verify_button_user_mgt_is_displayed() {
-        System.out.println("Tested UserMgt button is displayed");
+    @When("I click link text {string}")
+    public void iClickLinkText(String linkText) {
+        BrowserUtils.click(BrowserUtils.getDriver().findElement(By.linkText(linkText)));
+
     }
 
-    @Then("Verify button Others is displayed")
-    public void verify_button_others_is_displayed() {
-        System.out.println("Tested Others button is displayed");
+    @Then("Verify destination window as url as {string}")
+    public void verifyDestinationWindowAsUrlAs(String URL) {
+        BrowserUtils.switchToNewWindow();
+        BrowserUtils.assertEquals(BrowserUtils.getDriver().getCurrentUrl(), URL);
     }
 
-    @When("I click a button Others")
-    public void i_click_a_button_others() {
-        System.out.println("Clicked on Others page button");
-    }
 
-    @When("I click a button calendar")
-    public void i_click_a_button_calendar() {
-        System.out.println("Clicked a button calendar");
-    }
 }
+
+
